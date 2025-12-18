@@ -1,19 +1,19 @@
+
+
 import TaskCard from "@/components/TaskCard";
 
-// async function getTasks() {
-//   const res = await fetch("http://localhost:3000/api/tasks", {
-//     cache: "no-store",
-//   });
-//   return res.json();
-// }
+export const dynamic = "force-dynamic";
+
 async function getTasks() {
-  const res = await fetch("http://localhost:3000/api/tasks", {
+  const res = await fetch("/api/tasks", {
     cache: "no-store",
   });
 
-  const data = await res.json();
-  console.log("DATA FROM API:", data); // 👈 Debug log
-  return data;
+  if (!res.ok) {
+    throw new Error("Failed to fetch tasks");
+  }
+
+  return res.json();
 }
 
 export default async function HomePage() {
@@ -25,10 +25,10 @@ export default async function HomePage() {
 
       <div className="flex flex-col gap-4">
         {tasks.map((task: any) => (
-  <TaskCard key={task._id} task={task} />
-))}
-
+          <TaskCard key={task._id} task={task} />
+        ))}
       </div>
     </div>
   );
 }
+
